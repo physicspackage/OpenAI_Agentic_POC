@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+
+  agent-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4.1-mini}
+      - PRACTICE_NAME=${PRACTICE_NAME:-BrightSmile Dental}
+      - BACKEND_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
